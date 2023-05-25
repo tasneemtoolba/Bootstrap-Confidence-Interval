@@ -1,27 +1,12 @@
-
-
-# load packages
-# library(car)
-# library(rTPC) #remotes::instany_github('padpadpadpad/rTPC')
-library(tidyverse)
-library(dplyr)
-library(boot)
-library(nlstools)
-library(nls.multstart)
-library(broom)
-library(tidyverse)
-library(patchwork)
 library(minpack.lm)
-library(writexl)
 library(xlsx)
-library(dplyr)
 
 dbNames <- list('Tizen', 'Cyanogenmod','Nemo', 'Mer')
 
 for(dbName in dbNames){
   arrivalBugs <-
     readxl::read_xlsx(
-      str_glue("countedSRs{dbName}Bugs.xlsx"),
+      str_glue("./results/countedSRs{dbName}Bugs.xlsx"),
       col_names = c("t", "y"),
       col_types = c("numeric", "numeric")
     )
@@ -241,16 +226,6 @@ for(dbName in dbNames){
     sheet = sheet,
     startRow = 1
   )
-  saveWorkbook(wb, str_glue("resultEdited{dbName}.xlsx"))
+  saveWorkbook(wb, str_glue("./results/resultEdited{dbName}.xlsx"))
   
-}  
-  
-  # tizenBugLong <- gather(tizenBugs, key = rep_site, value = SR, -Quadrat_Area)
-  
-  # separate(rep_site, into = c("repo", "site"))
-  
-  # ggplot(sp_long, aes(x = Quadrat_Area, y = SR)) +
-  #   geom_point(aes(color = site))
-  
-  # sal <- nls(SR ~ c * Quadrant_Area ^ z, data = tizenBugLong, start = c(c = 10, z = 0.27))
-  # fit using Levenberg-Marquardt algorithm
+} 
