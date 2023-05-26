@@ -11,9 +11,9 @@ data = [
     ['a', 4.79814873794648, 4.20402142652626, 13.4545940502382, 'W more S-Shaped'],
     ['b', 0.00195348549402132, 3.80542428860189e-08, 0.204257324755152, 'W more S-Shaped'],
     ['c', 1.29548210672153, 0.304699108541422, 3.49988519330714, 'W more S-Shaped'],
-    ['a', 3.259895257304, 4.2773178758816, 5.553859289556, 'Yamada_Raleigh'],
-    ['b', 0.0128637894216985, 0.00712281819643572, 0.0554551832644858, 'Yamada_Raleigh'],
-    ['c', 0.00135141678168515, 0.000338826505600534, 0.0249208598240227, 'Yamada_Raleigh']
+    # ['a', 342.259895257304, 87.2773178758816, 597.553859289556, 'Yamada_Raleigh'],
+    # ['b', 0.0128637894216985, 0.00712281819643572, 0.0554551832644858, 'Yamada_Raleigh'],
+    # ['c', 0.00135141678168515, 0.000338826505600534, 0.0249208598240227, 'Yamada_Raleigh']
 ]
 
 # Separate the data by parameter variable
@@ -37,6 +37,7 @@ for param, values in parameters.items():
     # Plot the error bars
     ax.errorbar(x, medians, yerr=[lower_bounds, upper_bounds], fmt='o', label=param)
 
+    # ax.errorbar(x_pos, medians, yerr=[np.array(medians)-np.array(lower_bounds), np.array(upper_bounds)-np.array(medians)], fmt='none', capsize=5)
 
 # Configure the plot
 ax.set_xticks(np.arange(len(parameters['a'])))
