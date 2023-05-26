@@ -1,5 +1,7 @@
 library(minpack.lm)
 library(xlsx)
+library(stringr)
+library(nlstools)
 
 dbNames <- list('Tizen', 'Cyanogenmod','Nemo', 'Mer')
 
@@ -60,26 +62,6 @@ for(dbName in dbNames){
             message(cond)
           })
          
-          
-          tryCatch({
-            ## GO S-Shaped (GoS)
-            goS <- minpack.lm::nlsLM(
-              formula = y ~ a * (1 - (1 + b * t) * exp(-b * t)),
-              ## model
-              data = df,
-              ## dataset
-              start = c(a = aValue, b = bValue, c = cValue),
-              ## starting values
-            )
-            goSBoot <- nlsBoot(goS, niter = nValue)
-            result <- data.frame(goSBoot[["bootCI"]], 'goSBoot')
-            
-            colnames(result) <- colnames(positiveResults) 
-            positiveResults <- rbind(positiveResults, result)
-          },
-          error = function(cond) {
-            message(cond)
-          })
         
           tryCatch({
             ## Logistics (L)
@@ -93,35 +75,22 @@ for(dbName in dbNames){
             )
             
             lBoot <- nlsBoot(l, niter = nValue)
+            
+
+            
             result <- data.frame(lBoot[["bootCI"]], 'lBoot')
             
             colnames(result) <- colnames(positiveResults) 
             positiveResults <- rbind(positiveResults, result)
             
+            plot(lBoot)
+            plot(lBoot, type = "boxplot", ask = FALSE)
+            summary(lBoot)
           },
           error = function(cond) {
             message(cond)
           })
           
-          tryCatch({
-            ## Hossain-Dahiya (HD)
-            hd <- minpack.lm::nlsLM(
-              formula = y ~ a * ((1 - exp(-b * t)) / (1 + c * exp(-b * c))),
-              ## model
-              data = df,
-              ## dataset
-              start = c(a = aValue, b = bValue, c = cValue),
-              ## starting values
-            )
-            
-            hdBoot <- nlsBoot(hd, niter = nValue)
-            result <- data.frame(hdBoot[["bootCI"]], 'hdBoot')
-            colnames(result) <- colnames(positiveResults) 
-            positiveResults <- rbind(positiveResults, result)
-          },
-          error = function(cond) {
-            message(cond)
-          })
           
           tryCatch({
             ## Weibull (W)
@@ -136,10 +105,15 @@ for(dbName in dbNames){
             
             wBoot <- nlsBoot(w, niter = nValue)
             
+
+            
             result <- data.frame(wBoot[["bootCI"]], 'wBoot')
             colnames(result) <- colnames(positiveResults) 
             positiveResults <- rbind(positiveResults, result)
             
+            plot(wBoot)
+            plot(wBoot, type = "boxplot", ask = FALSE)
+            summary(wBoot)
           },
           error = function(cond) {
             message(cond)
@@ -157,37 +131,21 @@ for(dbName in dbNames){
             )
             
             wsBoot <- nlsBoot(ws, niter = nValue)
+
+            
             result <- data.frame(wsBoot[["bootCI"]], 'wsBoot')
             colnames(result) <- colnames(positiveResults) 
             positiveResults <- rbind(positiveResults, result)
             
+            plot(wsBoot)
+            plot(wsBoot, type = "boxplot", ask = FALSE)
+            summary(wsBoot)
           },
           error = function(cond) {
             message(cond)
           })
          
-          tryCatch({
-            ## Yamada Exp. (YE)
-            ye <- minpack.lm::nlsLM(
-              formula = y ~ a * (1 - exp(-b * (
-                1 - exp(c * t)
-              ))),
-              ## model
-              data = df,
-              ## dataset
-              start = c(a = aValue, b = bValue, c = cValue),
-              ## starting values
-            )
-            
-            yeBoot <- nlsBoot(ye, niter = nValue)
-            result <- data.frame(yeBoot[["bootCI"]], 'yeBoot')
-            colnames(result) <- colnames(positiveResults) 
-            positiveResults <- rbind(positiveResults, result)
-            
-          },
-          error = function(cond) {
-            message(cond)
-          })
+
           tryCatch({
             ## Yamada Raleigh (YR)
             yr <- minpack.lm::nlsLM(
@@ -202,11 +160,14 @@ for(dbName in dbNames){
             )
             
             yrBoot <- nlsBoot(yr, niter = nValue)
-           
+    
+            
             result <- data.frame(yrBoot[["bootCI"]], 'yrBoot')
             colnames(result) <- colnames(positiveResults) 
             positiveResults <- rbind(positiveResults, result)
-            
+            plot(yrBoot)
+            plot(yrBoot, type = "boxplot", ask = FALSE)
+            summary(yrBoot)
            },
           error = function(cond) {
             message(cond)
